@@ -17,12 +17,16 @@ done
 if [[ "${forward}" == "true" ]]; then
     echo "Performing forward sync from repo to config dirs"
     rsync -vaP ~/repo/fibonascii/dotfiles/nvim/.config/nvim/lua/fibonascii/* ~/.config/nvim/lua/fibonascii/
+    rsync -vaP ~/repo/fibonascii/dotfiles/nvim/.config/nvim/plugin/* ~/.config/nvim/plugin/
+    rsync -vaP ~/repo/fibonascii/bin/* ~/bin/
     cp ~/repo/fibonascii/dotfiles/nvim/.config/nvim/init.vim ~/.config/nvim/.init.vim
 fi
 
 if [[ "${backward}" == "true" ]]; then
     echo "Performing backward sync from config dirs to repo"
     rsync -vaP ~/.config/nvim/lua/fibonascii/* ~/repo/fibonascii/dotfiles/nvim/.config/nvim/lua/fibonascii/ 
+    rsync -vaP ~/.config/nvim/plugin/* ~/repo/fibonascii/dotfiles/nvim/plugin/
+    rsync -vaP ~/bin/* ~/repo/fibonascii/bin/
     cp ~/.config/nvim/init.vim ~/repo/fibonascii/dotfiles/nvim/.config/nvim/init.vim
 fi
 
