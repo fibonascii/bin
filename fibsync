@@ -3,5 +3,30 @@
 # Sync chabges between .config dir and dotfiles repo for neovim config.
 # Crude hack until I setup stow properly
 
-rsync -vaP ~/.config/nvim/lua/fibonascii/* ~/repo/fibonascii/dotfiles/nvim/.config/nvim/lua/fibonascii/ 
-cp ~/.config/nvim/init.vim ~/repo/fibonascii/dotfiles/nvim/.config/nvim/init.vim
+forward="false"
+backward="false"
+
+while getopts f:b: flag
+do
+    case "${flag}" in 
+        f) forward=${OPTARG};;
+        b) backward=${OPTARG};;
+    esac
+done
+
+if [[ "${forward}" == "true" ]]; then
+    echo "Performing forward sync from repo to config dirs"
+    rsync -vaP ~/repo/fibonascii/dotfiles/nvim/.config/nvim/lua/fibonascii/* ~/.config/nvim/lua/fibonascii/
+    cp ~/repo/fibonascii/dotfiles/nvim/.config/nvim/init.vim ~/.config/nvim/.init.vim
+fi
+
+if [[ "${backward}" == "true" ]]; then
+    echo "Performing backward sync from config dirs to repo"
+    rsync -vaP ~/.config/nvim/lua/fibonascii/* ~/repo/fibonascii/dotfiles/nvim/.config/nvim/lua/fibonascii/ 
+    cp ~/.config/nvim/init.vim ~/repo/fibonascii/dotfiles/nvim/.config/nvim/init.vim
+fi
+
+if [ $# -eq 0 ]; then
+    echo "No arguments provided"
+    exit 1
+fi
