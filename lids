@@ -1,0 +1,23 @@
+#!/bin/bash
+
+profile="admin-main"
+aws_command="$@"
+
+while getopts p:c: flag
+do
+    case "${flag}" in 
+        p) profile=${OPTARG};;
+        c) aws_command=${OPTARG};;
+    esac
+done
+
+
+AUTH=$(aws sts get-caller-identity --profile="${profile}")
+AUTH_RETURN_VALUE=$?
+
+if [ "${AUTH_RETURN_VALUE}" -eq 255 ]; then
+    echo "Not Authenticated to AWS"
+    aws sso login --profile="${profile}"
+fi
+
+AWS_PROFILE="${profile}" ${aws_command}

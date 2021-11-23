@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Sync chabges between .config dir and dotfiles repo for neovim config.
+# Crude hack until I setup stow properly
+
+rsync -vaP ~/.config/nvim/lua/fibonascii/* ~/repo/fibonascii/dotfiles/nvim/.config/nvim/lua/fibonascii/ 
+cp ~/.config/nvim/init.vim ~/repo/fibonascii/dotfiles/nvim/.config/nvim/init.vim
